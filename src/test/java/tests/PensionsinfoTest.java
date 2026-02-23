@@ -4,6 +4,8 @@ import dsl.PensionsinfoDsl;
 import dsl.TestContext;
 import org.junit.jupiter.api.*;
 
+import static utils.TestUtils.*;
+
 public class PensionsinfoTest {
     private TestContext testContext;
     private PensionsinfoDsl pensionsinfo;
@@ -27,14 +29,14 @@ public class PensionsinfoTest {
     @DisplayName("Dashboard_Slider_Validering")
     void verificerPensionstalVedForskelligeAldre() {
         pensionsinfo.undersoegPensionVedAlder("71");
-        pensionsinfo.verificerBeloeb("På én gang", "448.000");
-        pensionsinfo.verificerBeloeb("Folkepension", "90.000");
+        pensionsinfo.verificerBeloeb(GUL_BOKS, "448.000");
+        pensionsinfo.verificerBeloeb(LILLA_BOKS, "90.000");
     }
 
     @Test
     @DisplayName("Dashboard_Folkepension_Check")
     void tjekFolkepensionVed68aar() {
         pensionsinfo.undersoegPensionVedAlder("68");
-        pensionsinfo.verificerBeloeb("Om året, så længe du lever", "127.000");
+        pensionsinfo.verificerBeloeb(GROEN_BOKS, "127.000");
     }
 }

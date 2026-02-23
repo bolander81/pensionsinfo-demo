@@ -15,25 +15,21 @@ public class LoginDsl {
     }
 
     public void loginMedBruger(String bruger, String pass) {
-        System.out.println("→ Logger ind på Expand Testing...");
-        loginPage().gaaTilLoginSide();
-        loginPage().udfyldLogindata(bruger, pass);
+        System.out.println("→ Logger ind på Practice Test Automation...");
+        loginPage().indtastBrugernavn(bruger);
+        loginPage().indtastPassword(pass);
         loginPage().klikLogin();
     }
 
     public void verificerLoginSucces() {
-        String besked = loginPage().hentBesked();
-        System.out.println("→ Verificerer login besked: " + besked);
-        assertTrue(besked.contains("You logged into a secure area!"), "Login fejlede!");
+        String overskrift = loginPage().hentBesked();
+        assertTrue(overskrift.contains("Logged In Successfully"),
+                "Login lykkedes ikke! Overskrift var: " + overskrift);
     }
 
     public void verificerLoginFejlet() {
-        System.out.println("→ Verificerer fejlbesked på login-siden...");
-        String besked = loginPage().hentBesked();
-
-        assertTrue(besked.contains("Your username is invalid!"),
-                "Forventede en fejlbesked, men fandt: " + besked);
-
-        System.out.println("→ Verifikation succesfuld: Brugeren fik den korrekte fejlbesked.");
+        String fejlbesked = loginPage().hentBesked();
+        assertTrue(fejlbesked.contains("invalid"),
+                "→ Forventede en fejlbesked med 'invalid', men fandt: " + fejlbesked);
     }
 }
