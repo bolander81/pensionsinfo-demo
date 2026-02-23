@@ -19,7 +19,7 @@ public class TestContext {
     public TestContext() {
         this.playwright = Playwright.create();
         this.browser = playwright.chromium().launch(new BrowserType.LaunchOptions()
-                .setHeadless(false) // ← sæt til true for at køre uden UI (anbefales for CI)
+                .setHeadless(false) // ← sæt til true for at køre uden UI (når den skal køres i CI)
                 .setArgs(List.of("--no-sandbox", "--disable-gpu")));
 
         this.browserContext = browser.newContext(new Browser.NewContextOptions()
@@ -37,12 +37,14 @@ public class TestContext {
     public void close(String testName) {
         String sanitizedName = testName.replace(" ", "_");
 
+        Path testFolder = Path.of(RECORD_DIR, sanitizedName);
+
         Video video = page.video();
 
         if (tracing != null) {
-            String tracePath = RECORD_DIR + "/trace_" + sanitizedName + ".zip";
-            tracing.stop(new Tracing.StopOptions().setPath(Path.of(tracePath)));
-            System.out.println("Trace gemt: " + tracePath);
+            Path tracePath = testFolder.resolve("trace_" + sanitizedName + ".zip");
+            tracing.stop(new Tracing.StopOptions().setPath(tracePath));
+            System.out.println("→ Trace gemt i: " + tracePath);
         }
 
         page.close();
@@ -51,10 +53,10 @@ public class TestContext {
             browserContext.close();
 
             if (video != null) {
-                Path videoPath = Path.of(RECORD_DIR + "/video_" + sanitizedName + ".webm");
+                Path videoPath = testFolder.resolve("video_" + sanitizedName + ".webm");
                 video.saveAs(videoPath);
                 video.delete();
-                System.out.println("Video gemt: " + videoPath);
+                System.out.println("→ Video gemt i: " + videoPath);
             }
         }
 
@@ -65,6 +67,6 @@ public class TestContext {
             playwright.close();
         }
 
-        System.out.println("TestContext ressourcer er ryddet op.");
+        System.out.println("→ TestContext ressourcer er ryddet op for: " + sanitizedName);
     }
 }

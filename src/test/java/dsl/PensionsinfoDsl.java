@@ -15,27 +15,27 @@ public class PensionsinfoDsl {
     }
 
     public void gaaTilForside() {
-        System.out.println("Går til forsiden af Pensionsinfo...");
+        System.out.println("→ Går til forsiden af Pensionsinfo...");
         pensionsinfoPage().gaaTilForside(TestContext.PENSIONSINFO_URL);
 
-        System.out.println("Håndterer cookie-banner...");
+        System.out.println("→ Håndterer cookie-banner...");
         pensionsinfoPage().haandterCookieBanner();
     }
 
     public void startDemoForEnPerson() {
-        System.out.println("Klikker på 'Prøv demo'...");
+        System.out.println("→ Klikker på 'Prøv demo'...");
         pensionsinfoPage().klikProevDemo();
 
-        System.out.println("Vælger 'Demo - én person' i popup...");
+        System.out.println("→ Vælger 'Demo - én person' i popup...");
         pensionsinfoPage().vaelgEnPersonDemo();
     }
 
     public void verificerLandingPage() {
-        System.out.println("Verificerer landingpage...");
+        System.out.println("→ Verificerer landingpage...");
         var navn = pensionsinfoPage().overblikNavnLocator();
         navn.waitFor();
 
         assertTrue(navn.isVisible(), "Kunne ikke finde navnet 'Demo Demosen' på landingpagen.");
-        System.out.println("Verifikation succesfuld: Er landet på overblikssiden!");
+        System.out.println("→ Verifikation succesfuld: Er landet på overblikssiden!");
     }
 }

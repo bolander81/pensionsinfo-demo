@@ -11,7 +11,6 @@ public class PensionsinfoPageDriver extends BasePageDriver {
         super(page);
     }
 
-    // Locator til navnet på overblikssiden - specifikt for Pensionsinfo demo-brugeren
     public Locator overblikNavnLocator() {
         return page.getByRole(AriaRole.HEADING,
                 new Page.GetByRoleOptions().setName("Demo Demosen")).first();
@@ -30,12 +29,10 @@ public class PensionsinfoPageDriver extends BasePageDriver {
     }
 
     public void klikProevDemo() {
-        // Vi bruger 'alt' tekst eller tekst-match for at ramme knappen
         page.locator("a[alt='Prøv demo']").click();
     }
 
     public void vaelgEnPersonDemo() {
-        // Her bruger vi den tekniske 'log-btn' attribut som er meget stabil
         var enPersonKnap = page.locator("a[log-btn='DemoOnePersonLink']");
         enPersonKnap.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         enPersonKnap.click();

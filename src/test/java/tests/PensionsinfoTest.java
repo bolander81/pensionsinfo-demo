@@ -11,13 +11,11 @@ public class PensionsinfoTest {
     @BeforeEach
     void setup() {
         testContext = new TestContext();
-        // Vi navngiver variablen 'pensionsinfo' for maksimal klarhed
         pensionsinfo = new PensionsinfoDsl(testContext);
     }
 
     @AfterEach
     void tearDown(TestInfo testInfo) {
-        // Vi sender testnavnet med til close-metoden for korrekt navngivning af video/trace
         testContext.close(testInfo.getDisplayName());
     }
 

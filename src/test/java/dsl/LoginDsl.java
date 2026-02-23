@@ -15,7 +15,7 @@ public class LoginDsl {
     }
 
     public void loginMedBruger(String bruger, String pass) {
-        System.out.println("Logger ind på Expand Testing...");
+        System.out.println("→ Logger ind på Expand Testing...");
         loginPage().gaaTilLoginSide();
         loginPage().udfyldLogindata(bruger, pass);
         loginPage().klikLogin();
@@ -23,7 +23,7 @@ public class LoginDsl {
 
     public void verificerLoginSucces() {
         String besked = loginPage().hentBesked();
-        System.out.println("Verificerer login besked: " + besked);
+        System.out.println("→ Verificerer login besked: " + besked);
         assertTrue(besked.contains("You logged into a secure area!"), "Login fejlede!");
     }
 }
