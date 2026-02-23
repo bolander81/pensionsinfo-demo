@@ -19,14 +19,12 @@ public class TestContext {
     public TestContext() {
         this.playwright = Playwright.create();
         this.browser = playwright.chromium().launch(new BrowserType.LaunchOptions()
-                .setHeadless(false) // Behåll denne som false, hvis du vil se browseren køre normalt
+                .setHeadless(false) // ← sæt til true for at køre uden UI (anbefales for CI)
                 .setArgs(List.of("--no-sandbox", "--disable-gpu")));
 
-        // Her tilføjer vi video-optagelse til contexten
         this.browserContext = browser.newContext(new Browser.NewContextOptions()
                 .setRecordVideoDir(Path.of(RECORD_DIR)));
 
-        // Start Tracing
         this.tracing = browserContext.tracing();
         this.tracing.start(new Tracing.StartOptions()
                 .setScreenshots(true)
@@ -39,33 +37,27 @@ public class TestContext {
     public void close(String testName) {
         String sanitizedName = testName.replace(" ", "_");
 
-        // 1. Hent referencerne mens alt er åbent
         Video video = page.video();
 
-        // 2. Stop tracing og gem filen
         if (tracing != null) {
             String tracePath = RECORD_DIR + "/trace_" + sanitizedName + ".zip";
             tracing.stop(new Tracing.StopOptions().setPath(Path.of(tracePath)));
             System.out.println("Trace gemt: " + tracePath);
         }
 
-        // 3. Luk selve siden
         page.close();
 
-        // 4. Luk context (dette færdiggør videofilen)
         if (browserContext != null) {
             browserContext.close();
 
-            // Gem videoen med det rigtige navn efter context er lukket
             if (video != null) {
                 Path videoPath = Path.of(RECORD_DIR + "/video_" + sanitizedName + ".webm");
                 video.saveAs(videoPath);
-                video.delete(); // Slet den autogenererede fil med det kryptiske navn
+                video.delete();
                 System.out.println("Video gemt: " + videoPath);
             }
         }
 
-        // 5. Luk browser og playwright (Vigtigt for at rydde helt op)
         if (browser != null) {
             browser.close();
         }
