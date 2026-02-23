@@ -2,16 +2,17 @@ package tests;
 
 import dsl.LoginDsl;
 import dsl.TestContext;
+import utility.TestUtils;
 import org.junit.jupiter.api.*;
 
 public class LoginTest {
     private TestContext testContext;
-    private LoginDsl dsl;
+    private LoginDsl login;
 
     @BeforeEach
     void setup() {
         testContext = new TestContext();
-        dsl = new LoginDsl(testContext);
+        login = new LoginDsl(testContext);
     }
 
     @AfterEach
@@ -20,9 +21,16 @@ public class LoginTest {
     }
 
     @Test
-    @DisplayName("ExpandTesting_Login_Flow")
-    void brugerKanLoggeInd() {
-        dsl.loginMedBruger("practice", "SuperSecretPassword!");
-        dsl.verificerLoginSucces();
+    @DisplayName("Login_Positiv_Case")
+    void brugerKanLoggeIndMedKorrekteData() {
+        login.loginMedBruger(TestUtils.LOGIN_USER, TestUtils.LOGIN_PASSWORD);
+        login.verificerLoginSucces();
+    }
+
+    @Test
+    @DisplayName("Login_Negativ_Case")
+    void brugerFaarFejlVedForkertData() {
+        login.loginMedBruger(TestUtils.INVALID_USER, TestUtils.INVALID_PASSWORD);
+        login.verificerLoginFejlet();
     }
 }

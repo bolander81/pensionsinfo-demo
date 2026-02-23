@@ -26,4 +26,14 @@ public class LoginDsl {
         System.out.println("→ Verificerer login besked: " + besked);
         assertTrue(besked.contains("You logged into a secure area!"), "Login fejlede!");
     }
+
+    public void verificerLoginFejlet() {
+        System.out.println("→ Verificerer fejlbesked på login-siden...");
+        String besked = loginPage().hentBesked();
+
+        assertTrue(besked.contains("Your username is invalid!"),
+                "Forventede en fejlbesked, men fandt: " + besked);
+
+        System.out.println("→ Verifikation succesfuld: Brugeren fik den korrekte fejlbesked.");
+    }
 }
