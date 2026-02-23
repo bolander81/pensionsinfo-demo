@@ -1,0 +1,33 @@
+# --- Playwright specifikke filer ---
+# Vi udelukker hele recordings mappen og alle zip/webm filer
+recordings/
+*.zip
+*.webm
+test-results/
+playwright-report/
+blob-report/
+playwright/.local-browsers/
+
+# --- Build og System ---
+target/
+.DS_Store
+Thumbs.db
+
+# --- IntelliJ IDEA ---
+# Vi udelukker hele .idea mappen undtagen de absolut nødvendige projektfiler
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# --- Maven Wrapper (valgfrit) ---
+# Vi lader maven-wrapperen blive, hvis du bruger den
+!.mvn/wrapper/maven-wrapper.jar
+
+# --- Andre IDEs (valgfrit - kan fjernes hvis du kun bruger IntelliJ) ---
+.vscode/
+.classpath
+.project
+.settings/
+bin/
