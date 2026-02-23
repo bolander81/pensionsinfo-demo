@@ -12,6 +12,10 @@ public class PensionsinfoTest {
     void setup() {
         testContext = new TestContext();
         pensionsinfo = new PensionsinfoDsl(testContext);
+
+        pensionsinfo.gaaTilForside();
+        pensionsinfo.startDemoForEnPerson();
+        pensionsinfo.verificerLandingPage();
     }
 
     @AfterEach
@@ -20,10 +24,17 @@ public class PensionsinfoTest {
     }
 
     @Test
-    @DisplayName("Pensionsinfo_Demo_Flow")
-    void brugerKanStarteEnPersonDemo() {
-        pensionsinfo.gaaTilForside();
-        pensionsinfo.startDemoForEnPerson();
-        pensionsinfo.verificerLandingPage();
+    @DisplayName("Dashboard_Slider_Validering")
+    void verificerPensionstalVedForskelligeAldre() {
+        pensionsinfo.undersoegPensionVedAlder("71");
+        pensionsinfo.verificerBeloeb("På én gang", "448.000");
+        pensionsinfo.verificerBeloeb("Folkepension", "90.000");
+    }
+
+    @Test
+    @DisplayName("Dashboard_Folkepension_Check")
+    void tjekFolkepensionVed68aar() {
+        pensionsinfo.undersoegPensionVedAlder("68");
+        pensionsinfo.verificerBeloeb("Om året, så længe du lever", "127.000");
     }
 }

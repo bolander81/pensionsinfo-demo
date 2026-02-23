@@ -38,4 +38,21 @@ public class PensionsinfoDsl {
         assertTrue(navn.isVisible(), "Kunne ikke finde navnet 'Demo Demosen' på landingpagen.");
         System.out.println("→ Verifikation succesfuld: Er landet på overblikssiden!");
     }
+
+    public void undersoegPensionVedAlder(String alder) {
+        System.out.println("→ Navigerer til 'Pension' fanen...");
+        pensionsinfoPage().navigerTilPension();
+
+        System.out.println("→ Sætter pensionsalder til: " + alder);
+        pensionsinfoPage().saetPensionsalder(alder);
+    }
+
+    public void verificerBeloeb(String boksNavn, String forventetBeloeb) {
+        String faktiskBeloeb = pensionsinfoPage().hentBeloebFraFarvetBoks(boksNavn);
+        System.out.println("→ Boks '" + boksNavn + "' viser nu: " + faktiskBeloeb);
+
+        assertTrue(faktiskBeloeb.contains(forventetBeloeb),
+                String.format("\n[FEJL I DATA]\nBoks: %s\nForventede: %s\nMen fandt: %s\n",
+                        boksNavn, forventetBeloeb, faktiskBeloeb));
+    }
 }

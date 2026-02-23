@@ -37,4 +37,26 @@ public class PensionsinfoPageDriver extends BasePageDriver {
         enPersonKnap.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         enPersonKnap.click();
     }
+
+    public void navigerTilPension() {
+        page.locator("a[log-btn='NavigationPensionLink']").click();
+    }
+
+    public void saetPensionsalder(String alder) {
+        String selector = String.format("div[log-btn-age='%s']", alder);
+        var knap = page.locator(selector);
+
+        knap.waitFor();
+        knap.click();
+    }
+
+    public String hentBeloebFraFarvetBoks(String overskrift) {
+        var kolonne = page.locator(".table-first-year-column")
+                .filter(new Locator.FilterOptions().setHas(page.locator(".legend .text").getByText(overskrift)));
+
+        var beloebLocator = kolonne.locator(".legend .amount span").first();
+
+        beloebLocator.waitFor();
+        return beloebLocator.innerText();
+    }
 }

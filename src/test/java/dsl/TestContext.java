@@ -36,37 +36,47 @@ public class TestContext {
 
     public void close(String testName) {
         String sanitizedName = testName.replace(" ", "_");
-
         Path testFolder = Path.of(RECORD_DIR, sanitizedName);
 
         Video video = page.video();
 
-        if (tracing != null) {
-            Path tracePath = testFolder.resolve("trace_" + sanitizedName + ".zip");
-            tracing.stop(new Tracing.StopOptions().setPath(tracePath));
-            System.out.println("→ Trace gemt i: " + tracePath);
-        }
-
-        page.close();
-
-        if (browserContext != null) {
-            browserContext.close();
-
-            if (video != null) {
-                Path videoPath = testFolder.resolve("video_" + sanitizedName + ".webm");
-                video.saveAs(videoPath);
-                video.delete();
-                System.out.println("→ Video gemt i: " + videoPath);
+        try {
+            if (tracing != null) {
+                Path tracePath = testFolder.resolve("trace_" + sanitizedName + ".zip");
+                tracing.stop(new Tracing.StopOptions().setPath(tracePath));
+                System.out.println("→ Trace gemt i: " + tracePath);
             }
-        }
 
-        if (browser != null) {
-            browser.close();
-        }
-        if (playwright != null) {
-            playwright.close();
-        }
+            if (page != null) {
+                page.close();
+            }
 
-        System.out.println("→ TestContext ressourcer er ryddet op for: " + sanitizedName);
+            if (browserContext != null) {
+                if (video != null) {
+                    Path videoPath = testFolder.resolve("video_" + sanitizedName + ".webm");
+                    video.saveAs(videoPath);
+                    video.delete();
+                    System.out.println("→ Video gemt i: " + videoPath);
+                }
+                browserContext.close();
+            }
+
+            Thread.sleep(500);
+
+            if (browser != null) {
+                browser.close();
+            }
+            if (playwright != null) {
+                playwright.close();
+            }
+
+            System.out.println("→ Ressourcer er ryddet op for: " + sanitizedName);
+
+        } catch (InterruptedException e) {
+            System.err.println("Fejl under nedluknings-pause: " + e.getMessage());
+            Thread.currentThread().interrupt();
+        } catch (Exception e) {
+            System.err.println("Fejl under lukning af TestContext: " + e.getMessage());
+        }
     }
 }
