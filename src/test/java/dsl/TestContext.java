@@ -19,11 +19,16 @@ public class TestContext {
     public TestContext() {
         this.playwright = Playwright.create();
         this.browser = playwright.chromium().launch(new BrowserType.LaunchOptions()
-                .setHeadless(false) // ← sæt til true for at køre uden UI (når den skal køres i CI)
+                .setHeadless(false)
                 .setArgs(List.of("--no-sandbox", "--disable-gpu")));
 
+        int width = 1920;
+        int height = 1080;
+
         this.browserContext = browser.newContext(new Browser.NewContextOptions()
-                .setRecordVideoDir(Path.of(RECORD_DIR)));
+                .setRecordVideoDir(Path.of(RECORD_DIR))
+                .setRecordVideoSize(width, height)
+                .setViewportSize(width, height));
 
         this.tracing = browserContext.tracing();
         this.tracing.start(new Tracing.StartOptions()
